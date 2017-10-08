@@ -27,6 +27,7 @@
 \usepackage{array}
 \usepackage[normalem]{ulem}
 \usepackage{environ}
+\usepackage{hyperref}
 % \usepackage[noae]{Sweave}
 
 \setcounter{secnumdepth}{4}
@@ -109,5 +110,306 @@
     z &= \rho \cdot \cos{\varphi}
 \end{align}
 
-\end{document} 
+\section{Базовые преобразования}
+
+\subsection{Перенос точки}
+
+\begin{equation}
+    T^*(\Delta x, \Delta y, \Delta z) =
+    \begin{vmatrix}
+        1        & 0        & 0        & 0 \\
+        0        & 1        & 0        & 0 \\
+        0        & 0        & 1        & 0 \\
+        \Delta x & \Delta y & \Delta z & 1 \\
+    \end{vmatrix}
+\end{equation}
+
+\subsection{Масштабирование точки относительно центра координат}
+
+\begin{equation}
+    S^*(Sx, Sy, Sz) =
+    \begin{vmatrix}
+        Sx & 0  & 0  & 0 \\
+        0  & Sy & 0  & 0 \\
+        0  & 0  & Sz & 0 \\
+        0  & 0  & 0  & 1 \\
+    \end{vmatrix}
+\end{equation}
+
+\subsection{Поворот точки вокруг оси $x$}
+
+\begin{equation}
+    R^*_x(\alpha) =
+    \begin{vmatrix}
+        1 & 0             & 0            & 0 \\
+        0 & \cos(\alpha)  & \sin(\alpha) & 0 \\
+        0 & -\sin(\alpha) & \cos(\alpha) & 0 \\
+        0 & 0             & 0            & 1 \\
+    \end{vmatrix}
+\end{equation}
+
+\subsection{Поворот точки вокруг оси $y$}
+
+\begin{equation}
+    R^*_y(\alpha) =
+    \begin{vmatrix}
+        \cos(\alpha) & 0 & -\sin(\alpha) & 0 \\
+        0            & 1 & 0             & 0 \\
+        \sin(\alpha) & 0 & \cos(\alpha)  & 0 \\
+        0            & 0 & 0             & 1 \\
+    \end{vmatrix}
+\end{equation}
+
+\subsection{Поворот точки вокруг оси $z$}
+
+\begin{equation}
+    R^*_z(\alpha) =
+    \begin{vmatrix}
+        \cos(\alpha)  & \sin(\alpha) & 0 & 0 \\
+        -\sin(\alpha) & \cos(\alpha) & 0 & 0 \\
+        0             & 0            & 1 & 0 \\
+        0             & 0            & 0 & 1 \\
+    \end{vmatrix}
+\end{equation}
+
+\section{Обратные операции}
+
+\subsection{Перенос системы координат}
+\begin{equation}
+    T^{-1}(\Delta x, \Delta y, \Delta z) = T^*(-\Delta x, -\Delta y, -\Delta z)
+\end{equation}
+
+\subsection{Масштабирование осей системы координат}
+\begin{equation}
+    S^{-1}(Sx, Sy, Sz) = S^*\left(\frac{1}{Sx}, \frac{1}{Sy}, \frac{1}{Sz}\right)
+\end{equation}
+
+\subsection{Поворот системы координат вокруг осей}
+\begin{equation}
+    R^{-1}_i(\alpha) = R^*_i(-\alpha)
+\end{equation}
+\begin{where}
+    $i$ -- ось системы координат ($\{x, y, z\}$).
+\end{where}
+
+\break
+
+\section{Композиция 3D преобразований}
+
+\subsection{Поворот точки относительно линии, проходящей через начало системы координат на угол $\alpha$}
+
+\begin{equation}
+    R^{-1}_z(\theta) \cdot R^{-1}_y(\varphi) \cdot \bm{R_z(\alpha)} \cdot R^{-1}_y(-\varphi) \cdot R^{-1}_z(-\theta)
+\end{equation}
+
+\begin{align*}
+    \underbrace{
+        \begin{vmatrix}
+            \cos(-\theta)  & \sin(-\theta) & 0 & 0 \\
+            -\sin(-\theta) & \cos(-\theta) & 0 & 0 \\
+            0              & 0             & 1 & 0 \\
+            0              & 0             & 0 & 1 \\
+        \end{vmatrix}
+    }_{R^{-1}_z(\theta)}
+    &
+    \times
+    \underbrace{
+        \begin{vmatrix}
+            \cos(-\varphi) & 0 & -\sin(-\varphi) & 0 \\
+            0              & 1 & 0               & 0 \\
+            \sin(-\varphi) & 0 & \cos(-\varphi)  & 0 \\
+            0              & 0 & 0               & 1 \\
+        \end{vmatrix}
+    }_{R^{-1}_y(\varphi)}
+\end{align*}
+\begin{align*}
+    \times
+    \underbrace{
+        \begin{vmatrix}
+            \cos(\alpha)  & \sin(\alpha) & 0 & 0 \\
+            -\sin(\alpha) & \cos(\alpha) & 0 & 0 \\
+            0             & 0            & 1 & 0 \\
+            0             & 0            & 0 & 1 \\
+        \end{vmatrix}
+    }_{\bm{R_z(\alpha)}}
+\end{align*}
+\begin{align*}
+    \times
+    \underbrace{
+        \begin{vmatrix}
+            \cos(\varphi) & 0 & -\sin(\varphi) & 0 \\
+            0             & 1 & 0              & 0 \\
+            \sin(\varphi) & 0 & \cos(\varphi)  & 0 \\
+            0             & 0 & 0              & 1 \\
+        \end{vmatrix}
+    }_{R^{-1}_y(-\varphi)}
+    &
+    \times
+    \underbrace{
+        \begin{vmatrix}
+            \cos(\theta)  & \sin(\theta) & 0 & 0 \\
+            -\sin(\theta) & \cos(\theta) & 0 & 0 \\
+            0             & 0            & 1 & 0 \\
+            0             & 0            & 0 & 1 \\
+        \end{vmatrix}
+    }_{R^{-1}_z(-\theta)}
+\end{align*}
+
+\begin{align*}
+    R^{-1}_z(\theta) \cdot R^{-1}_y(\varphi)
+    &=
+    \begin{vmatrix}
+        \cos(-\theta)  & \sin(-\theta) & 0 & 0 \\
+        -\sin(-\theta) & \cos(-\theta) & 0 & 0 \\
+        0              & 0             & 1 & 0 \\
+        0              & 0             & 0 & 1 \\
+    \end{vmatrix}
+    \times
+    \begin{vmatrix}
+        \cos(-\varphi) & 0 & -\sin(-\varphi) & 0 \\
+        0              & 1 & 0               & 0 \\
+        \sin(-\varphi) & 0 & \cos(-\varphi)  & 0 \\
+        0              & 0 & 0               & 1 \\
+    \end{vmatrix}
+    \\ &=
+    \begin{vmatrix}
+        \cos(\theta) & -\sin(\theta) & 0 & 0 \\
+        \sin(\theta) & \cos(\theta)  & 0 & 0 \\
+        0            & 0             & 1 & 0 \\
+        0            & 0             & 0 & 1 \\
+    \end{vmatrix}
+    \times
+    \begin{vmatrix}
+        \cos(\varphi)  & 0 & \sin(\varphi) & 0 \\
+        0              & 1 & 0             & 0 \\
+        -\sin(\varphi) & 0 & \cos(\varphi) & 0 \\
+        0              & 0 & 0             & 1 \\
+    \end{vmatrix}
+    \\ &=
+    \begin{vmatrix}
+        \cos(\theta)\cos(\varphi) & -\sin(\theta) & \cos(\theta)\sin(\varphi) & 0 \\
+        \sin(\theta)\cos(\varphi) & \cos(\theta)  & \sin(\theta)\sin(\varphi) & 0 \\
+        -\sin(\varphi)            & 0             & \cos(\varphi)             & 0 \\
+        0                         & 0             & 0                         & 1 \\
+    \end{vmatrix}
+\end{align*}
+
+\href{https://www.wolframalpha.com/input/?i=%7B%7Bcos(-theta),sin(-theta),0,0%7D,%7B-sin(-theta),cos(-theta),0,0%7D,%7B0,0,1,0%7D,%7B0,0,0,1%7D%7D*%7B%7Bcos(-phi),0,-sin(-phi),0%7D,%7B0,1,0,0%7D,%7Bsin(-phi),0,cos(-phi),0%7D,%7B0,0,0,1%7D%7D}{WolframAlpha}
+
+\begin{align*}
+    R^{-1}_y(-\varphi) \cdot R^{-1}_z(-\theta)
+    &=
+    \begin{vmatrix}
+        \cos(\varphi) & 0 & -\sin(\varphi) & 0 \\
+        0             & 1 & 0              & 0 \\
+        \sin(\varphi) & 0 & \cos(\varphi)  & 0 \\
+        0             & 0 & 0              & 1 \\
+    \end{vmatrix}
+    \times
+    \begin{vmatrix}
+        \cos(\theta)  & \sin(\theta) & 0 & 0 \\
+        -\sin(\theta) & \cos(\theta) & 0 & 0 \\
+        0             & 0            & 1 & 0 \\
+        0             & 0            & 0 & 1 \\
+    \end{vmatrix}
+    \\ &=
+    \begin{vmatrix}
+        \cos(\varphi)\cos(\theta) & \cos(\varphi)\sin(\theta) & -\sin(\varphi) & 0 \\
+        -\sin(\theta)             & \cos(\theta)              & 0              & 0 \\
+        \sin(\varphi)\cos(\theta) & \sin(\varphi)\sin(\theta) & \cos(\varphi)  & 0 \\
+        0                         & 0                         & 0              & 1 \\
+    \end{vmatrix}
+\end{align*}
+
+\href{https://www.wolframalpha.com/input/?i=%7B%7Bcos(phi),0,-sin(phi),0%7D,%7B0,1,0,0%7D,%7Bsin(phi),0,cos(phi),0%7D,%7B0,0,0,1%7D%7D*%7B%7Bcos(theta),sin(theta),0,0%7D,%7B-sin(theta),cos(theta),0,0%7D,%7B0,0,1,0%7D,%7B0,0,0,1%7D%7D}{WolframAlpha}
+
+\begin{align*}
+    & \left[ R^{-1}_z(\theta) \cdot R^{-1}_y(\varphi) \right] \cdot \bm{R_z(\alpha)} =
+    \\ &=
+    \begin{vmatrix}
+        \cos(\theta)\cos(\varphi) & -\sin(\theta) & \cos(\theta)\sin(\varphi) & 0 \\
+        \sin(\theta)\cos(\varphi) & \cos(\theta)  & \sin(\theta)\sin(\varphi) & 0 \\
+        -\sin(\varphi)            & 0             & \cos(\varphi)             & 0 \\
+        0                         & 0             & 0                         & 1 \\
+    \end{vmatrix}
+    \times
+    \begin{vmatrix}
+        \cos(\alpha)  & \sin(\alpha) & 0 & 0 \\
+        -\sin(\alpha) & \cos(\alpha) & 0 & 0 \\
+        0             & 0            & 1 & 0 \\
+        0             & 0            & 0 & 1 \\
+    \end{vmatrix}
+    \\ &=
+    \begin{vmatrix}
+        \cos(\theta)\cos(\varphi)\cos(\alpha) + \sin(\theta)\sin(\alpha) & \cos(\theta)\cos(\varphi)\sin(\alpha) - \sin(\theta)\cos(\alpha) & \cos(\theta)\sin(\varphi) & 0 \\
+        \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) & \sin(\theta)\cos(\varphi)\sin(\alpha) + \cos(\theta)\cos(\alpha) & \sin(\theta)\sin(\varphi) & 0 \\
+        -\sin(\varphi)\cos(\alpha)                                       & -\sin(\varphi)\sin(\alpha)                                       & \cos(\varphi)             & 0 \\
+        0                                                                & 0                                                                & 0                         & 1 \\
+    \end{vmatrix}
+\end{align*}
+
+\href{https://www.wolframalpha.com/input/?i=%7B%7BCos%5B%CE%B8%5DCos%5B%CF%95%5D,-Sin%5B%CE%B8%5D,Cos%5B%CE%B8%5DSin%5B%CF%95%5D,0%7D,%7BCos%5B%CF%95%5DSin%5B%CE%B8%5D,Cos%5B%CE%B8%5D,Sin%5B%CE%B8%5DSin%5B%CF%95%5D,0%7D,%7B-Sin%5B%CF%95%5D,0,Cos%5B%CF%95%5D,0%7D,%7B0,0,0,1%7D%7D*%7B%7Bcos(alpha),sin(alpha),0,0%7D,%7B-sin(alpha),cos(alpha),0,0%7D,%7B0,0,1,0%7D,%7B0,0,0,1%7D%7D}{WolframAlpha}
+
+\begin{align*}
+    & \left[ R^{-1}_z(\theta) \cdot R^{-1}_y(\varphi) \cdot \bm{R_z(\alpha)} \right] \cdot \left[ R^{-1}_y(-\varphi) \cdot R^{-1}_z(-\theta) \right] =
+    \\ &=
+    \begin{vmatrix}
+        \cos(\theta)\cos(\varphi)\cos(\alpha) + \sin(\theta)\sin(\alpha) & \cos(\theta)\cos(\varphi)\sin(\alpha) - \sin(\theta)\cos(\alpha) & \cos(\theta)\sin(\varphi) & 0 \\
+        \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) & \sin(\theta)\cos(\varphi)\sin(\alpha) + \cos(\theta)\cos(\alpha) & \sin(\theta)\sin(\varphi) & 0 \\
+        -\sin(\varphi)\cos(\alpha)                                       & -\sin(\varphi)\sin(\alpha)                                       & \cos(\varphi)             & 0 \\
+        0                                                                & 0                                                                & 0                         & 1 \\
+    \end{vmatrix}
+    \\ &\times
+    \begin{vmatrix}
+        \cos(\varphi)\cos(\theta) & \cos(\varphi)\sin(\theta) & -\sin(\varphi) & 0 \\
+        -\sin(\theta)             & \cos(\theta)              & 0              & 0 \\
+        \sin(\varphi)\cos(\theta) & \sin(\varphi)\sin(\theta) & \cos(\varphi)  & 0 \\
+        0                         & 0                         & 0              & 1 \\
+    \end{vmatrix}
+    \\ &=
+    \begin{vmatrix}
+        r_{11} & r_{12} & r_{13} & r_{14} \\
+        r_{21} & r_{22} & r_{23} & r_{24} \\
+        r_{31} & r_{32} & r_{33} & r_{34} \\
+        r_{41} & r_{42} & r_{43} & r_{44} \\
+    \end{vmatrix}
+\end{align*}
+
+\begin{align*}
+    r_{11}
+    &= \left[ \cos(\theta)\cos(\varphi)\cos(\alpha) + \sin(\theta)\sin(\alpha) \right] \cdot \left[\cos(\varphi)\cos(\theta)\right] \\
+    &+ \left[ \cos(\theta)\cos(\varphi)\sin(\alpha) - \sin(\theta)\cos(\alpha) \right] \cdot \left[-\sin(\theta)\right] \\
+    &+ \left[\cos(\theta)\sin(\varphi)\right] \cdot \left[\sin(\varphi)\cos(\theta)\right] \\
+    \\
+    r_{12}
+    &= \left[ \cos(\theta)\cos(\varphi)\cos(\alpha) + \sin(\theta)\sin(\alpha) \right] \cdot \left[ \cos(\varphi)\sin(\theta) \right] \\
+    &+ \left[ \cos(\theta)\cos(\varphi)\sin(\alpha) - \sin(\theta)\cos(\alpha) \right] \cdot \left[\cos(\theta)\right] \\
+    &+ \left[\cos(\theta)\sin(\varphi)\right] \cdot \left[\sin(\varphi)\sin(\theta)\right] \\
+    \\
+    r_{13}
+    &= \left[ \cos(\theta)\cos(\varphi)\cos(\alpha) + \sin(\theta)\sin(\alpha) \right] \cdot \left[-\sin(\varphi)\right] \\
+    &+ \left[\cos(\theta)\sin(\varphi)\right] \cdot \left[\cos(\varphi)\right] \\
+    \\
+    r_{14} &= 0 \\
+\end{align*}
+\begin{align*}
+    r_{21}
+    &= \left[ \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) \right] \cdot \left[\cos(\varphi)\cos(\theta)\right] \\
+    &+ \left[ \sin(\theta)\cos(\varphi)\sin(\alpha) + \cos(\theta)\cos(\alpha) \right] \cdot \left[-\sin(\theta)\right] \\
+    &+ \left[\sin(\theta)\sin(\varphi)\right] \cdot \left[\sin(\varphi)\cos(\theta)\right] \\
+    \\
+    r_{22}
+    &= \left[ \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) \right] \cdot \left[\cos(\varphi)\sin(\theta)\right] \\
+    &+ \left[ \sin(\theta)\cos(\varphi)\sin(\alpha) + \cos(\theta)\cos(\alpha) \right] \cdot \left[\cos(\theta)\right] \\
+    &+ \left[\sin(\theta)\sin(\varphi)\right] \cdot \left[\sin(\varphi)\sin(\theta)\right] \\
+    \\
+    r_{23}
+    &= \left[ \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) \right] \cdot \left[-\sin(\varphi)\right] \\
+    &+ \left[\sin(\theta)\sin(\varphi)\right] \cdot \left[\cos(\varphi)\right] \\
+    \\
+    r_{24} &= 0 \\
+    \\
+\end{align*}
+
+\end{document}
 
