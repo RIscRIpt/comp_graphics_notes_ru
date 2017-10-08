@@ -1,0 +1,113 @@
+\documentclass[a4paper]{article}
+\usepackage[autostyle]{csquotes}
+\usepackage{fix-cm}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{datetime}
+\usepackage{mathtools}
+\usepackage{marginnote}
+\usepackage[margin=3cm,right=2cm]{geometry}
+\usepackage{titlesec}
+\usepackage{nicefrac}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{svg}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[normalem]{ulem}
+\usepackage{environ}
+% \usepackage[noae]{Sweave}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\renewcommand\qedsymbol{\textit{ч.т.д.}}
+
+\newtheoremstyle{hangindent}
+    {\topsep}                   % above space
+    {\topsep}                   % below space
+    {\hangindent=1cm}           % body font
+    {}                          % head indent
+    {\bfseries}                 % head font
+    {:\vspace{.1\baselineskip}} % head punct
+    {\newline}                  % head space
+    {}                          % head spec
+
+\theoremstyle{hangindent}
+\newtheorem{theorem}{Теорема}[section]
+
+\theoremstyle{hangindent}
+\newtheorem{definition}{Определение}[subsubsection]
+
+\delimitershortfall-1sp
+
+\newcommand\abs[1]{\left|#1\right|}
+\newcommand\norm[1]{\left|\left|#1\right|\right|}
+\newcommand\cond[1]{\text{cond}\left(#1\right)}
+\newcommand{\m}[1]{\ensuremath{\bm{#1}}}
+\newcommand\eqdef{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\newcommand\atanT[2]{\mbox{atan2}\left(#1, #2\right)}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\vcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\newenvironment{where}[1][где:]
+    {#1 \begin{tabular}[t]{>{}<{} @{${}{}$}l}}
+    {\end{tabular}\\[\belowdisplayskip]}
+
+\newcolumntype{\l}{@{}l@{}}
+\newcolumntype{\c}{@{}c@{}}
+\newcolumntype{\r}{@{}r@{}}
+
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{C}{>{$}c<{$}}
+\newcolumntype{R}{>{$}r<{$}}
+
+\newcolumntype{\L}{@{}L@{}}
+\newcolumntype{\C}{@{}C@{}}
+\newcolumntype{\R}{@{}R@{}}
+
+\newcolumntype{\ML}{>{$\displaystyle}l<{$}}
+\newcolumntype{\MC}{>{$\displaystyle}c<{$}}
+\newcolumntype{\MR}{>{$\displaystyle}r<{$}}
+
+\definecolor{red}{rgb}{1,0.8,0.8}
+\definecolor{green}{rgb}{0.8,1,0.8}
+
+\DeclareTextFontCommand{\emph}{\boldmath\bfseries}
+
+\begin{document}
+
+\section{Пересчёт систем координат}
+\subsection{Из декартовых в сферические}
+\begin{align}
+    \rho    & = \sqrt{x^2 + y^2 + z^2} \\
+    \varphi & = \arccos{\frac{z}{\rho}} \\
+    \theta  & = \atanT{y}{x}
+\end{align}
+
+\subsection{Из сферические в декартовы}
+\begin{align}
+    x &= \rho \cdot \sin{\varphi} \cdot \cos{\theta} \\
+    y &= \rho \cdot \sin{\varphi} \cdot \sin{\theta} \\
+    z &= \rho \cdot \cos{\varphi}
+\end{align}
+
+\end{document} 
+
