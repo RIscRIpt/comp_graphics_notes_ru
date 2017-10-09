@@ -392,6 +392,7 @@
     \\
     r_{14} &= 0 \\
 \end{align*}
+
 \begin{align*}
     r_{21}
     &= \left[ \sin(\theta)\cos(\varphi)\cos(\alpha) - \cos(\theta)\sin(\alpha) \right] \cdot \left[\cos(\varphi)\cos(\theta)\right] \\
@@ -409,6 +410,37 @@
     \\
     r_{24} &= 0 \\
     \\
+\end{align*}
+
+\begin{align*}
+    r_{31}
+    &= \left[ -\sin(\varphi)\cos(\alpha) \right] \cdot \left[ \cos(\varphi)\cos(\theta) \right] \\
+    &+ \left[ -\sin(\varphi)\sin(\alpha) \right] \cdot \left[ -\sin(\theta) \right] \\
+    &+ \left[ \cos(\varphi) \right] \cdot \left[ \sin(\varphi)\cos(\theta) \right] \\
+    &= -\sin(\varphi)\cos(\alpha)\cos(\varphi)\cos(\theta) + \sin(\varphi)\sin(\alpha)\sin(\theta) + \cos(\varphi)\sin(\varphi)\cos(\theta) \\
+    &= \sin(\varphi)\left[ \sin(\alpha)\sin(\theta) - \left( \cos(\alpha)-1 \right) \cos(\varphi)\cos(\theta) \right] \\
+    \\
+    r_{32}
+    &= \left[ -\sin(\varphi)\cos(\alpha) \right] \cdot \left[ \cos(\varphi)\sin(\theta) \right] \\
+    &+ \left[ -\sin(\varphi)\sin(\alpha) \right] \cdot \left[ \cos(\theta) \right] \\
+    &+ \left[ \cos(\varphi) \right] \cdot \left[ \sin(\varphi)\sin(\theta) \right] \\
+    &= -\sin(\varphi)\cos(\alpha)\cos(\varphi)\sin(\theta) - \sin(\varphi)\sin(\alpha)\cos(\theta) + \cos(\varphi)\sin(\varphi)\sin(\theta) \\
+    &= -\sin(\varphi)\left[ \left( \cos(\alpha)-1 \right) \cos(\varphi)\sin(\theta) + \sin(\alpha)\cos(\theta) \right] \\
+    \\
+    r_{33}
+    &= \left[ -\sin(\varphi)\cos(\alpha) \right] \cdot \left[ -\sin(\varphi) \right] \\
+    &+ \left[ \cos(\varphi) \right] \cdot \left[ \cos(\varphi) \right] \\
+    &= \sin^2(\varphi)\cos(\alpha) + \cos^2(\varphi) \\
+    \\
+    r_{34} &= 0 \\
+    \\
+\end{align*}
+
+\begin{align*}
+    r_{41} &= 0 \\
+    r_{42} &= 0 \\
+    r_{43} &= 0 \\
+    r_{44} &= 1 \\
 \end{align*}
 
 \end{document}
